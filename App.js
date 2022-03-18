@@ -25,6 +25,28 @@ import ImageResizer from 'react-native-image-resizer';
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
+  const uploader = async (source) => {
+    try {
+      let form = new FormData();
+      form.append('file', source);
+      const rawResponse = await fetch('https://apidummy.kerjoo.com/api/attendances/ce775101-7e41-4f06-bfa9-ecf3919d724e', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data'
+        },
+        body: form
+      });
+
+      const content = await rawResponse.json();
+
+      console.log("content",content)
+      return data;
+    } catch (error) {
+      throw new Error('Something broke from uploader');
+    }
+  };
+
   const handleOpenCamera = useCallback(async () => {
     try {
       await AskPermissionCamera();
@@ -38,8 +60,7 @@ const App = () => {
       if (!image.didCancel) {
         const source = image.assets[0];
         const resizeImage = await ImageResizer.createResizedImage(source.uri, 150, 150, 'JPEG', 50);
-        // await uploader({uri: resizeImage.uri, name: resizeImage.name, type: 'image/jpeg'});
-
+        await uploader(resizeImage);
       }
     } catch (error) {
     } finally {
