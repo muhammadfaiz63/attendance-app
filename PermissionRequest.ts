@@ -63,7 +63,6 @@ export const locationPermission = async () => {
     }
     if (granted) {
       await locationConfig();
-      let location = await RNLocation.getLatestLocation();
     //   if (location) {
     //     Storage.setMap('currentDirection', location);
     //   }
